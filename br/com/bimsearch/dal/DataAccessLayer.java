@@ -19,7 +19,7 @@ public class DataAccessLayer{
 		// user who can access the server above. 
 		String user = "appuser";
 		// password, for now it is empty.
-		String password = "appSenha123";
+		String password = "";
 
 		// Here I'll add a try block: this way, if an error occurs it won't crash.
 		try{

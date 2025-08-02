@@ -1,8 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-
 package br.com.bimsearch.windows;
 import java.lang.Object;
 import java.sql.*;
@@ -43,6 +38,7 @@ public class User extends javax.swing.JFrame {
 			else{
 				txtLogin.setText(null);
 				cbbUser.setSelectedItem(null);
+				txtPassword.setText(null);
 			}
 		}
 		catch(Exception e){

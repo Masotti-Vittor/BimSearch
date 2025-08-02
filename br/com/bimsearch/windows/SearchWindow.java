@@ -4,7 +4,11 @@
  */
 package br.com.bimsearch.windows;
 import br.com.bimsearch.windows.User;
+import br.com.bimsearch.windows.ListPane;
+import br.com.bimsearch.windows.ImagesPane;
+import br.com.bimsearch.windows.AddElement;
 import javax.swing.JOptionPane;
+import java.util.ArrayList;
 /**
  *
  * @author wasotty
@@ -13,11 +17,22 @@ public class SearchWindow extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(SearchWindow.class.getName());
 
+
+// Add these above the constructor
     /**
      * Creates new form SearchWindow
      */
+
     public SearchWindow() {
         initComponents();
+	
+	ImagesPane images = new ImagesPane();
+	images.setVisible(true);
+	desktop.add(images);
+
+	ListPane list = new ListPane();
+	list.setVisible(true);
+	desktopList.add(list);
     }
 
 /**
@@ -27,16 +42,17 @@ public class SearchWindow extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
-    private void initComponents() {
+private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         desktop = new javax.swing.JDesktopPane();
         desktopList = new javax.swing.JDesktopPane();
-        jScrollPane2 = new javax.swing.JScrollPane();
         lblId = new javax.swing.JLabel();
         lblPosition = new javax.swing.JLabel();
         lblProject = new javax.swing.JLabel();
         lblBy = new javax.swing.JLabel();
+        btnAddEl = new javax.swing.JButton();
+        lblBy1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menSea = new javax.swing.JMenu();
         menFil = new javax.swing.JMenu();
@@ -62,23 +78,15 @@ public class SearchWindow extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        desktopList.setLayer(jScrollPane2, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
         javax.swing.GroupLayout desktopListLayout = new javax.swing.GroupLayout(desktopList);
         desktopList.setLayout(desktopListLayout);
         desktopListLayout.setHorizontalGroup(
             desktopListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, desktopListLayout.createSequentialGroup()
-                .addContainerGap(249, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addGap(0, 270, Short.MAX_VALUE)
         );
         desktopListLayout.setVerticalGroup(
             desktopListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(desktopListLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2)
-                .addContainerGap())
+            .addGap(0, 564, Short.MAX_VALUE)
         );
 
         lblId.setFont(new java.awt.Font("Cantarell", 0, 18)); // NOI18N
@@ -92,6 +100,17 @@ public class SearchWindow extends javax.swing.JFrame {
 
         lblBy.setFont(new java.awt.Font("Cantarell", 0, 18)); // NOI18N
         lblBy.setText("By:");
+
+        btnAddEl.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/bimsearch/windows/images/searchIcons/add.png"))); // NOI18N
+        btnAddEl.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnAddEl.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddElAddActionPerformed(evt);
+            }
+        });
+
+        lblBy1.setFont(new java.awt.Font("Cantarell", 1, 24)); // NOI18N
+        lblBy1.setText("Add Element");
 
         menSea.setText("Search");
         jMenuBar1.add(menSea);
@@ -155,13 +174,23 @@ public class SearchWindow extends javax.swing.JFrame {
                 .addComponent(desktop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(desktopList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblId)
-                    .addComponent(lblPosition)
-                    .addComponent(lblProject)
-                    .addComponent(lblBy))
-                .addContainerGap(146, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(55, 55, 55)
+                        .addComponent(lblBy1)
+                        .addGap(0, 56, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblId)
+                            .addComponent(lblPosition)
+                            .addComponent(lblProject)
+                            .addComponent(lblBy))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAddEl)
+                        .addGap(93, 93, 93))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,14 +206,18 @@ public class SearchWindow extends javax.swing.JFrame {
                         .addComponent(lblProject)
                         .addGap(18, 18, 18)
                         .addComponent(lblBy)
-                        .addGap(0, 422, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblBy1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnAddEl)
+                        .addGap(62, 62, 62))
                     .addComponent(desktopList))
                 .addContainerGap())
         );
 
         setSize(new java.awt.Dimension(900, 632));
         setLocationRelativeTo(null);
-    }// </editor-fold>                        
+    }// </editor-fold>
 
     private void menOptExiActionPerformed(java.awt.event.ActionEvent evt) {                                          
         int exit = JOptionPane.showConfirmDialog(null, "Are you sure you want to leave?","Yo!", JOptionPane.YES_NO_OPTION);
@@ -207,9 +240,13 @@ public class SearchWindow extends javax.swing.JFrame {
         User users = new User();
         users.setVisible(true);
     }                                         
+    private void btnAddElAddActionPerformed(java.awt.event.ActionEvent evt) {                                          
+        AddElement element = new AddElement();
+        element.setVisible(true);
+    }                                         
  
 
-    /**
+  /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
@@ -235,12 +272,13 @@ public class SearchWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify                     
+    private javax.swing.JButton btnAddEl;
     private javax.swing.JDesktopPane desktop;
     private javax.swing.JDesktopPane desktopList;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblBy;
+    private javax.swing.JLabel lblBy1;
     private javax.swing.JLabel lblId;
     private javax.swing.JLabel lblPosition;
     private javax.swing.JLabel lblProject;
@@ -255,4 +293,4 @@ public class SearchWindow extends javax.swing.JFrame {
     private javax.swing.JMenu menSea;
     // End of variables declaration                   
 }
-
+  

@@ -44,7 +44,7 @@ public class WindowInfo extends javax.swing.JFrame {
 
         lblInf2.setText("Avoiding double modelling, time wasting, and helping to organize elements which may be");
 
-        lblInf3.setText("reutilized in other ptojects. ");
+        lblInf3.setText("reutilized in other projects. ");
 
         lblAuthor.setText("Made by: Vittor Masotti");
 
