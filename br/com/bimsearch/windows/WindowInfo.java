@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package br.com.bimsearch.windows;
 
 /**
@@ -12,9 +8,6 @@ public class WindowInfo extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(WindowInfo.class.getName());
 
-    /**
-     * Creates new form WindowInfo
-     */
     public WindowInfo() {
         initComponents();
     }
@@ -38,13 +31,10 @@ public class WindowInfo extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Information");
 
-        lblInf1.setText("System developed with the objective of supporting the search of 3D models.");
-        lblInf1.setToolTipText("");
-        lblInf1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-
-        lblInf2.setText("Avoiding double modelling, time wasting, and helping to organize elements which may be");
-
-        lblInf3.setText("reutilized in other projects. ");
+	
+	lblInf1.setText("System developed to support the search for 3D models.");
+	lblInf2.setText("Avoids duplicate modeling, saves time, and helps organize elements");
+	lblInf3.setText("that can be reused in other projects.");
 
         lblAuthor.setText("Made by: Vittor Masotti");
 
