@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Bim Search
+Comment=Database Internship Application
+Exec=/bin/bash -c "cd /home/wasotty/UTFPR/thirdperiod/projects/dataBaseInternship && ./runApp.sh"
+Path=
+Icon=/home/wasotty/UTFPR/thirdperiod/projects/dataBaseInternship/Icon.png
+Terminal=false
+Categories=Utility;
+StartupWMClass=BimSearch

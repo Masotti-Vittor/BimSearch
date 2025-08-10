@@ -29,6 +29,7 @@ public class ListPane extends javax.swing.JInternalFrame {
 		// for each element in his list, create a button that, when clicked, shows the corresponding image.
 		for (Connector c : elementos) {
 			JButton btn = new JButton(c.getNameId());
+			btn.setAlignmentX(Component.CENTER_ALIGNMENT);
 			btn.addActionListener(e -> {
 				imagesPane.showImage(c.getImagePath());
 			}); 
@@ -45,6 +46,8 @@ public class ListPane extends javax.swing.JInternalFrame {
 
 		sclPane = new javax.swing.JScrollPane();
 		sclPanel = new javax.swing.JPanel();
+
+		sclPanel.setLayout(new BoxLayout(sclPanel, BoxLayout.Y_AXIS));
 
 		setMinimumSize(new java.awt.Dimension(270, 564));
 		setPreferredSize(new java.awt.Dimension(270, 564));

@@ -19,10 +19,8 @@ public class LoginWindow extends javax.swing.JFrame {
 		//The line under will use the ? and look for the infos in the dataBase. 
 		String sql = "select * from bimuser where login=? and password =?";
 		try{
-			//? will get what is typed, and then look for it in the dataBase.
 			pst = conec.prepareStatement(sql);
 			pst.setString(1, txfUser.getText());
-			//-
 			// This following block treats the password, overwriting it from the garbage after its been used.
 			char[] charsPassword = txfPassword.getPassword();
 			String password = new String(charsPassword);

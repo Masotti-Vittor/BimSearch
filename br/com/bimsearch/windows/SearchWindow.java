@@ -24,7 +24,7 @@ public class SearchWindow extends javax.swing.JFrame {
 
 	// The list and images variables will be used to access methods from the classes ListPane and ImagesPane.
 	// Also, list and images are necessary to trigger/call their windows' elements. 
-	private ListPane list;
+	private ListPane list, listSearch;
 	private ImagesPane images; 
 	private Connector c;
 	private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(SearchWindow.class.getName());
@@ -53,6 +53,8 @@ public class SearchWindow extends javax.swing.JFrame {
 		// "(this)" is necessary, because the constructor of SizeConnecWindow requires a SearchWindow parameter.
 		sc = new SizeConnecWindow(this);
 
+		SearchFilter filterWindow = new SearchFilter(this);
+		filterWindow.setVisible(true);
 		// lambdas with the same job as the actionslisteners. I made them so each time we use a checkbox, the list updates. 
 		jCheckBoxMenuItem1.addActionListener(e -> receiveFilter());
 		menFilCaCa.addActionListener(e -> receiveFilter());
@@ -79,7 +81,8 @@ public class SearchWindow extends javax.swing.JFrame {
 		this.nCon = nConnect;
 		updateFilteredList();
 	}
-	
+
+
 	// This one verifies and matches the infos of the filter and the table "images" in the database.
 
 	public void updateFilteredList() {
@@ -102,7 +105,7 @@ public class SearchWindow extends javax.swing.JFrame {
 			pst = conec.prepareStatement(sql.toString()); // .toString() because the prepareStatement requires a string.  
 			rs = pst.executeQuery();
 
-			// If there are more matches.
+			// If there are matches.
 			while (rs.next()) {
 				Connector conn = new Connector(
 						rs.getString("image_path"),
@@ -118,7 +121,7 @@ public class SearchWindow extends javax.swing.JFrame {
 						);
 				connectors.add(conn);
 				System.out.println("Image path: " + rs.getString("image_path"));
-				
+
 			}
 
 			list.updateList(connectors, images); // Update the list with the matches.
@@ -127,16 +130,16 @@ public class SearchWindow extends javax.swing.JFrame {
 		}
 	}
 
-	public void searchEl(){
-		String sql = "SELECT * FROM images WHERE nameId=?";
-		List<Connector> connectors = new ArrayList<>();
 
-		try{
+	public void searchEl(String nameId){
+		String sql = "SELECT * FROM images WHERE nameId=?";
+		List<Connector> connectorSearch = new ArrayList<>();
+		try {
 			pst = conec.prepareStatement(sql);
-			pst.setString(1, c.getNameId());
+			pst.setString(1, nameId);
 			rs = pst.executeQuery();
 
-			if(rs.next()){
+			if (rs.next()) {
 				Connector c = new Connector(
 						rs.getString("image_path"),
 						rs.getInt("numero_conexoes"),
@@ -149,18 +152,19 @@ public class SearchWindow extends javax.swing.JFrame {
 						rs.getInt("tamanho"),
 						rs.getString("nameId")
 						);
-				connectors.add(c);
-
+				connectorSearch.add(c);
+				System.out.println("Image path: " + rs.getString("image_path"));
+			} else {
+				System.out.println("No result found.");
 			}
-			list.updateList(connectors, images);
 
-		}
-		catch(Exception e){
+			list.updateList(connectorSearch, images);
+
+		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e);
-
 		}
-	
 	}
+
 
 	// The GUI your about to see was created with NetBeans. Here, what I coded are the actionListeners. Not lambdas because the structure was already partially done. In the next update of the code, I may code it with lambdas.
 	
@@ -421,7 +425,7 @@ public class SearchWindow extends javax.swing.JFrame {
 	}                                         
 
 	private void menSea2ActionPerformed(java.awt.event.ActionEvent evt) {                                       
-		SearchFilter searchfilter = new SearchFilter();
+		SearchFilter searchfilter = new SearchFilter(this);
 		searchfilter.setVisible(true);
 	}                                      
 

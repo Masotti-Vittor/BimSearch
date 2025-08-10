@@ -11,10 +11,16 @@ public class SearchFilter extends javax.swing.JFrame {
 	/**
 	 * Creates new form SearchFilter
 	 */
-	public SearchFilter() {
+	public SearchFilter(SearchWindow sc) {
 		initComponents();        
 		setLocationRelativeTo(null); 
+		this.sc = sc;
 	}
+	
+	public String getNameId(){
+		return txtIdFil.getText();
+	}
+
 
 	/**
 	 * This method is called from within the constructor to initialize the form.
@@ -71,8 +77,8 @@ public class SearchFilter extends javax.swing.JFrame {
 	}// </editor-fold>                        
 
 	private void btnOkFilActionPerformed(java.awt.event.ActionEvent evt) {                                         
-		sc = new SearchWindow();
-		sc.searchEl();
+		sc.searchEl(getNameId());		
+		dispose();
 	}                                        
 
 	/**
@@ -97,7 +103,7 @@ public class SearchFilter extends javax.swing.JFrame {
 		//</editor-fold>
 
 		/* Create and display the form */
-		java.awt.EventQueue.invokeLater(() -> new SearchFilter().setVisible(true));
+		java.awt.EventQueue.invokeLater(() -> new SearchFilter(null).setVisible(true));
 	}
 
 	// Variables declaration - do not modify                     
