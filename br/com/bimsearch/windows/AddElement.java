@@ -185,22 +185,22 @@ public class AddElement extends javax.swing.JFrame {
 
 		lblProject.setText("Project:");
 
-		rdbArg.setText("Argola");
+		rdbArg.setText("Ring");
 		rdbArg.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				rdbArgActionPerformed(evt);
 			}
 		});
 
-		jRadioButton2.setText("Cabo X cabo");
+		jRadioButton2.setText("Cable X Cable");
 
-		jRadioButton3.setText("Conduite X Conduite");
+		jRadioButton3.setText("Conduit X Conduit");
 
-		jRadioButton4.setText("Cabo X Conduite");
+		jRadioButton4.setText("Cable X Conduit");
 
-		jRadioButton5.setText("Equipamento");
+		jRadioButton5.setText("Equipement");
 
-		jRadioButton6.setText("Aereo");
+		jRadioButton6.setText("Overhead");
 
 		lblFilter.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
 		lblFilter.setText("Filter");

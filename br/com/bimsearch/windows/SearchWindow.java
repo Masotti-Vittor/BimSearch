@@ -266,27 +266,27 @@ public class SearchWindow extends javax.swing.JFrame {
 
 
 		jCheckBoxMenuItem1.setSelected(true);
-		jCheckBoxMenuItem1.setText("Argola");
+		jCheckBoxMenuItem1.setText("Ring");
 		menFilArg.add(jCheckBoxMenuItem1);
 
 		menFilCaCa.setSelected(true);
-		menFilCaCa.setText("Cabo x Cabo");
+		menFilCaCa.setText("Cable x Cable");
 		menFilArg.add(menFilCaCa);
 
 		menFilCoCo.setSelected(true);
-		menFilCoCo.setText("Conduite x Conduite");
+		menFilCoCo.setText("Conduit x Conduit");
 		menFilArg.add(menFilCoCo);
 
 		menFilCaCo.setSelected(true);
-		menFilCaCo.setText("Cabo x Conduite");
+		menFilCaCo.setText("Cable x Conduit");
 		menFilArg.add(menFilCaCo);
 
 		menFilEqu.setSelected(true);
-		menFilEqu.setText("Equipamento");
+		menFilEqu.setText("Equipement");
 		menFilArg.add(menFilEqu);
 
 		menFilAer.setSelected(true);
-		menFilAer.setText("Aereo");
+		menFilAer.setText("Overhead");
 		menFilArg.add(menFilAer);
 
 		menSizCon.setText(" Size & Connections");
