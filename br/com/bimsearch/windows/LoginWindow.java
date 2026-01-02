@@ -17,7 +17,7 @@ public class LoginWindow extends javax.swing.JFrame {
 
 	public void log(){
 		//The line under will use the ? and look for the infos in the dataBase. 
-		String sql = "select * from bimuser where login=? and password =?";
+		String sql = "select * from bimuser where username=? and password =?";
 		try{
 			pst = conec.prepareStatement(sql);
 			pst.setString(1, txfUser.getText());

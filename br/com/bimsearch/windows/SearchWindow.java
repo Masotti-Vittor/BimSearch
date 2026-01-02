@@ -90,16 +90,16 @@ public class SearchWindow extends javax.swing.JFrame {
 
 		// Different from the other classes, we're using StringBuilder. 
 		// It is because String is immutable, but not a StringBuilder. This allow a more efficient code due to the ifs.
-		StringBuilder sql = new StringBuilder("SELECT * FROM images WHERE 1=1");
+		StringBuilder sql = new StringBuilder("SELECT * FROM images WHERE TRUE=TRUE");
 		 
 		if (nCon > 0) sql.append(" AND numero_conexoes = ").append(nCon);
 		if (size > 0) sql.append(" AND tamanho = ").append(size);
-		if (argola) sql.append(" AND argola = 1");
-		if (cabo) sql.append(" AND cabo = 1");
-		if (conduite) sql.append(" AND conduite = 1");
-		if (caboConduite) sql.append(" AND cabo_conduite = 1");
-		if (equipamento) sql.append(" AND equipamento = 1");
-		if (aereo) sql.append(" AND aereo = 1");
+		if (argola) sql.append(" AND argola = TRUE");
+		if (cabo) sql.append(" AND cabo = TRUE");
+		if (conduite) sql.append(" AND conduite = TRUE");
+		if (caboConduite) sql.append(" AND cabo_conduite = TRUE");
+		if (equipamento) sql.append(" AND equipamento = TRUE");
+		if (aereo) sql.append(" AND aereo = TRUE");
 
 		try {
 			pst = conec.prepareStatement(sql.toString()); // .toString() because the prepareStatement requires a string.  

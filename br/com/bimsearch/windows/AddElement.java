@@ -34,7 +34,7 @@ public class AddElement extends javax.swing.JFrame {
 	}
 
 
-	// Here, the images and file handling were coded with the support of similar programs, youtube videos and AI. I kept it pretty self explaining, but, if you're a begginer like me, I will summarize some lines.
+	// Here, the images and file handling were coded with the support of similar programs, youtube videos and AI. I kept it pretty self explaining, but, if you're a beginner like me, I will summarize some lines.
 	
 	//This method makes the tool "Drag and Drop Image" functional. Surely you've seen this kind of window in some websites. 
 	// Many of the methods called here are from libraries focused on working with images and files. Thus, you can look which ones I imported at the start of this file. 
@@ -75,7 +75,7 @@ public class AddElement extends javax.swing.JFrame {
 	// This one is direct. It sends the given file to the path showed here. 
 	// If you desire to change the path where each image will be saved in, please change the 2 lines with the current path.
 	private String copyToProjectFolder(File originalFile) throws IOException {
-		String relativePath = "/home/wasotty/UTFPR/thirdperiod/projects/dataBaseInternship/src/br/com/bimsearch/windows/images/";
+		String relativePath = "src/br/com/bimsearch/windows/images/";
 		File directory = new File(relativePath);
 
 
@@ -88,14 +88,14 @@ public class AddElement extends javax.swing.JFrame {
 
 		Files.copy(originalFile.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-		return "/home/wasotty/UTFPR/thirdperiod/projects/dataBaseInternship/src/br/com/bimsearch/windows/images/" + fileName;
+		return "src/br/com/bimsearch/windows/images/" + fileName;
 	}
 
 	// This method will be called when button is clicked. With it, the specs of each element, with the path where its image is saved, will be given and added to the database. 
 
 	private void add(){
 
-		String sql = "insert into images(image_path, numero_conexoes, argola, cabo, conduite, cabo_conduite, equipamento, aereo, tamanho, nameId) value (?,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into images(image_path, numero_conexoes, argola, cabo, conduite, cabo_conduite, equipamento, aereo, tamanho, nameId) VALUES (?,?,?,?,?,?,?,?,?,?)";
 
 		try{
 			pst = conec.prepareStatement(sql);

@@ -23,19 +23,20 @@ public class ImagesPane extends javax.swing.JInternalFrame {
 		initComponents();
 	}
 
-	// This method was made with the help of an Artificial Intelligence.
+	// This method was made with the help of an Artificial Intelligence, unlike most of the project's code.
 	// The main objective of this method is to 
 	// 1. Receive the path where the image is.
 	// 2. Show the image in the lbl made inside this JInternalFrame, this window.
 	// 3. Modify the size, and center the image.
 	public void showImage(String path) {
 		try {
+		System.out.println("Trying to load image from: " + path); // Criei isso porque estou tendo problemas com caminhso, quero ver onde está. Debugando
 			File f = new File(path);
 			if (!f.exists()) {
 				JOptionPane.showMessageDialog(null, "Arquivo não encontrado: " + path);
 				return;
 			}
-
+			System.out.println("Trying to load image from: " + path);
 			ImageIcon icon = new ImageIcon(path);
 			Image img = icon.getImage();
 

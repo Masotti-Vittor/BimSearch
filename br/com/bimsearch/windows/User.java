@@ -55,15 +55,14 @@ public class User extends javax.swing.JFrame {
 	}
 
 	public void add(){
-		String sql = "insert into bimuser(id, login, password, perfil) value (?,?,?,?)";
+		String sql = "insert into bimuser(username, password, perfil) values (?,?,?)";
 		try{
 			pst = conec.prepareStatement(sql);
 
-			pst.setString(1, txtId.getText());
-			pst.setString(2, txtLogin.getText());
-			pst.setString(3, txtPassword.getText());
+			pst.setString(1, txtLogin.getText());
+			pst.setString(2, txtPassword.getText());
 			if(cbbUser.getSelectedItem() != null){
-				pst.setString(4, cbbUser.getSelectedItem().toString());
+				pst.setString(3, cbbUser.getSelectedItem().toString());
 			}
 			else{
 				JOptionPane.showMessageDialog(null, "You must choose a type of user");
@@ -93,7 +92,7 @@ public class User extends javax.swing.JFrame {
 
 	public void change(){
 
-		String sql = "update bimuser set login=?, password=?, perfil=? where id=?";
+		String sql = "update bimuser set username=?, password=?, perfil=? where id=?";
 
 
 		try{	
@@ -195,7 +194,8 @@ public class User extends javax.swing.JFrame {
 			}
 		});
 
-		btnAdd.setIcon(new javax.swing.ImageIcon("/home/wasotty/UTFPR/thirdperiod/projects/dataBaseInternship/br/com/bimsearch/windows/images/userIcons/addUser.png")); // NOI18N
+	
+		btnAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/bimsearch/windows/images/userIcons/addUser.png"))); // NOI18N
 		btnAdd.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
 		btnSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -222,16 +222,14 @@ public class User extends javax.swing.JFrame {
 			}
 		});
 
-
-		btnRemove.setIcon(new javax.swing.ImageIcon("/home/wasotty/UTFPR/thirdperiod/projects/dataBaseInternship/br/com/bimsearch/windows/images/userIcons/removeUser.png")); // NOI18N
+		btnRemove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/bimsearch/windows/images/userIcons/removeUser.png")));
 		btnRemove.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-		btnSearch.setIcon(new javax.swing.ImageIcon("/home/wasotty/UTFPR/thirdperiod/projects/dataBaseInternship/br/com/bimsearch/windows/images/userIcons/search.png")); // NOI18N
+		btnSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/bimsearch/windows/images/userIcons/search.png")));
 		btnSearch.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-		btnEdit.setIcon(new javax.swing.ImageIcon("/home/wasotty/UTFPR/thirdperiod/projects/dataBaseInternship/br/com/bimsearch/windows/images/userIcons/editUser.png")); // NOI18N
-		btnEdit.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
+		btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/bimsearch/windows/images/userIcons/editUser.png")));
+		btnEdit.setBorder(javax.swing.BorderFactory.createEtchedBorder());	
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
 		layout.setHorizontalGroup(
