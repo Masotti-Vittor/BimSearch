@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class ListPane extends javax.swing.JInternalFrame {
 
 	private List<Connector> elementos;
@@ -41,7 +42,7 @@ public class ListPane extends javax.swing.JInternalFrame {
 	}
 
 
-	@SuppressWarnings("unchecked")
+
 	private void initComponents() {
 
 		sclPane = new javax.swing.JScrollPane();
