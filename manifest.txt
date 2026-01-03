@@ -1,2 +1,0 @@
-Main-Class: Main
-Class-Path: tmp/br/com/bimsearch/mysql-connector-j-9.3.0.jar
