@@ -4,15 +4,15 @@ BIM SEARCH
           Hello! I’m excited to share my first program, developed in Java and MySQL.This project's objective is to optimize the modeling of elements in large-scale projects, such as industrial plants or electrical stations.
 
 💥
-The problem
+The problem:
           In big projects, it’s common for team members to accidentally model the same element more than once. Because the project area is huge, different members work on different sections. Thus, the same element may appear in multiple places. If this duplication goes unnoticed, someone might spend anywhere from 15 minutes to several hours redoing something that already exists. On the other hand, searching for an element can also waste time due to the amount of components.
 
 ⁉️
-The cause
+The cause:
           Large projects can contain thousands of different elements. As the number grows, it becomes harder to track what’s already been created. Some elements can even get “lost” among the completed projects.
 
 ✅️
-The solution
+The solution:
           I built a program that allows users to store images of elements along with metadata describing their characteristics. This data is stored in a database, and the images are saved to a designated folder on the company’s server. After modeling an element, a user can add it to the program. Other team members can then search for it using filters based on the metadata. Instead of searching through 400 components, a user might look within 15; or even fewer as more filters are applied. This saves significant time and avoids unnecessary duplication.
 
 ---
