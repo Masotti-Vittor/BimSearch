@@ -1,4 +1,5 @@
 package br.com.bimsearch.windows;
+
 import java.sql.*;
 import br.com.bimsearch.dal.DataAccessLayer;
 import javax.swing.TransferHandler;
@@ -18,7 +19,8 @@ import javax.swing.JOptionPane;
  */
 public class AddElement extends javax.swing.JFrame {
 
-	private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AddElement.class.getName());
+	private static final java.util.logging.Logger logger = java.util.logging.Logger
+			.getLogger(AddElement.class.getName());
 	private File selectedFile;
 
 	Connection conec = null;
@@ -34,12 +36,16 @@ public class AddElement extends javax.swing.JFrame {
 		conec = DataAccessLayer.connector();
 	}
 
+	// Here, the images and file handling were coded with the support of similar
+	// programs, youtube videos and AI. I kept it pretty self explaining, but, if
+	// you're a beginner like me, I will summarize some lines.
 
-	// Here, the images and file handling were coded with the support of similar programs, youtube videos and AI. I kept it pretty self explaining, but, if you're a beginner like me, I will summarize some lines.
-	
-	//This method makes the tool "Drag and Drop Image" functional. Surely you've seen this kind of window in some websites. 
-	// Many of the methods called here are from libraries focused on working with images and files. Thus, you can look which ones I imported at the start of this file. 
-	
+	// This method makes the tool "Drag and Drop Image" functional. Surely you've
+	// seen this kind of window in some websites.
+	// Many of the methods called here are from libraries focused on working with
+	// images and files. Thus, you can look which ones I imported at the start of
+	// this file.
+
 	private void setupDragAndDrop() {
 		// Now pnlDrag accepts dragged files.
 		pnlDrag.setTransferHandler(new TransferHandler() {
@@ -48,7 +54,8 @@ public class AddElement extends javax.swing.JFrame {
 			// If something os dragged to it, this method will be called.
 			public boolean importData(TransferHandler.TransferSupport support) {
 				try {
-					List<File> files = (List<File>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
+					List<File> files = (List<File>) support.getTransferable()
+							.getTransferData(DataFlavor.javaFileListFlavor);
 					// Gets only the first file from the received list.
 					File imgFile = files.get(0);
 					selectedFile = imgFile;
@@ -67,6 +74,7 @@ public class AddElement extends javax.swing.JFrame {
 					return false;
 				}
 			}
+
 			public boolean canImport(TransferHandler.TransferSupport support) {
 				return support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
 			}
@@ -74,12 +82,12 @@ public class AddElement extends javax.swing.JFrame {
 		});
 	}
 
-	// This one is direct. It sends the given file to the path showed here. 
-	// If you desire to change the path where each image will be saved in, please change the 2 lines with the current path.
+	// This one is direct. It sends the given file to the path showed here.
+	// If you desire to change the path where each image will be saved in, please
+	// change the 2 lines with the current path.
 	private String copyToProjectFolder(File originalFile) throws IOException {
 		String relativePath = "src/br/com/bimsearch/windows/images/";
 		File directory = new File(relativePath);
-
 
 		if (!directory.exists()) {
 			directory.mkdirs();
@@ -93,13 +101,15 @@ public class AddElement extends javax.swing.JFrame {
 		return "src/br/com/bimsearch/windows/images/" + fileName;
 	}
 
-	// This method will be called when button is clicked. With it, the specs of each element, with the path where its image is saved, will be given and added to the database. 
+	// This method will be called when button is clicked. With it, the specs of each
+	// element, with the path where its image is saved, will be given and added to
+	// the database.
 
-	private void add(){
+	private void add() {
 
-		String sql = "insert into images(image_path, numero_conexoes, argola, cabo, conduite, cabo_conduite, equipamento, aereo, tamanho, nameId) VALUES (?,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into images(image_path, numero_conexoes, argola, cabo, conduite, cabo_conduite, equipamento, aereo, tamanho, nameId, project) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 
-		try{
+		try {
 			pst = conec.prepareStatement(sql);
 			if (selectedFile != null) {
 				String newPath = copyToProjectFolder(selectedFile);
@@ -107,11 +117,11 @@ public class AddElement extends javax.swing.JFrame {
 				pst.setString(1, newPath);
 			} else {
 				JOptionPane.showMessageDialog(null, "There is no image selected.");
-				return; 
-			}	
+				return;
+			}
 
 			pst.setString(2, txtNconnections.getText());
-			pst.setBoolean(3, rdbArg.isSelected());	
+			pst.setBoolean(3, rdbArg.isSelected());
 			pst.setBoolean(4, jRadioButton2.isSelected());
 			pst.setBoolean(5, jRadioButton3.isSelected());
 			pst.setBoolean(6, jRadioButton4.isSelected());
@@ -119,10 +129,13 @@ public class AddElement extends javax.swing.JFrame {
 			pst.setBoolean(8, jRadioButton6.isSelected());
 			pst.setString(9, txtSize.getText());
 			pst.setString(10, txtNameElement.getText());
+			pst.setString(11, lblProject.getText());
 			// Create a column with the project where the element was created. (later).
-			// I'll need a second path for a second image if desired. I'd need to change how many files it can hold, probably. 
+			// I'll need a second path for a second image if desired. I'd need to change how
+			// many files it can hold, probably.
 
-			if(txtNconnections.getText() != null && txtNameElement.getText() != null && txtSize.getText() != null){
+			if (txtNconnections.getText() != null && txtNameElement.getText() != null && txtSize.getText() != null
+					&& lblProject.getText() != null) {
 				pst.executeUpdate();
 
 				txtNconnections.setText(null);
@@ -138,12 +151,10 @@ public class AddElement extends javax.swing.JFrame {
 
 				selectedFile = null;
 
-			}
-			else{
+			} else {
 				JOptionPane.showMessageDialog(null, "Fill every 'obrigatorio' field");
 			}
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e);
 
 		}
@@ -155,12 +166,12 @@ public class AddElement extends javax.swing.JFrame {
 	 * WARNING: Do NOT modify this code. The content of this method is always
 	 * regenerated by the Form Editor.
 	 */
-	
-	// <editor-fold defaultstate="collapsed" desc="Generated Code">                        
+
+	// <editor-fold defaultstate="collapsed" desc="Generated Code">
 	private void initComponents() {
 
 		lblNameElement = new javax.swing.JLabel();
-		lblProject = new javax.swing.JLabel();
+		lblProject = new javax.swing.JTextField();
 		rdbArg = new javax.swing.JRadioButton();
 		jRadioButton2 = new javax.swing.JRadioButton();
 		jRadioButton3 = new javax.swing.JRadioButton();
@@ -173,11 +184,13 @@ public class AddElement extends javax.swing.JFrame {
 		lblConnections = new javax.swing.JLabel();
 		lblSize = new javax.swing.JLabel();
 		txtNameElement = new javax.swing.JTextField();
-		cmbProject = new javax.swing.JComboBox<>();
+		lblProjectTitle = new javax.swing.JLabel();
+		lblProject = new javax.swing.JTextField();
 		pnlDrag = new javax.swing.JPanel();
 		lblDragHere = new javax.swing.JLabel();
 		btnCancel = new javax.swing.JButton();
 		btnOk = new javax.swing.JButton();
+		lblProjectTxt = new javax.swing.JLabel();
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 		setResizable(false);
@@ -185,7 +198,7 @@ public class AddElement extends javax.swing.JFrame {
 
 		lblNameElement.setText("Name:");
 
-		lblProject.setText("Project:");
+		lblProjectTxt.setText("Project:");
 
 		rdbArg.setText("Ring");
 		rdbArg.addActionListener(new java.awt.event.ActionListener() {
@@ -211,13 +224,6 @@ public class AddElement extends javax.swing.JFrame {
 
 		lblSize.setText("Size:");
 
-		cmbProject.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-		cmbProject.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				cmbProjectActionPerformed(evt);
-			}
-		});
-
 		pnlDrag.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
 		lblDragHere.setText("Drag the images here.");
@@ -227,18 +233,16 @@ public class AddElement extends javax.swing.JFrame {
 		pnlDrag.setLayout(pnlDragLayout);
 		pnlDragLayout.setHorizontalGroup(
 				pnlDragLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(pnlDragLayout.createSequentialGroup()
-					.addGap(80, 80, 80)
-					.addComponent(lblDragHere)
-					.addContainerGap(86, Short.MAX_VALUE))
-				);
+						.addGroup(pnlDragLayout.createSequentialGroup()
+								.addGap(80, 80, 80)
+								.addComponent(lblDragHere)
+								.addContainerGap(86, Short.MAX_VALUE)));
 		pnlDragLayout.setVerticalGroup(
 				pnlDragLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(pnlDragLayout.createSequentialGroup()
-					.addGap(78, 78, 78)
-					.addComponent(lblDragHere)
-					.addContainerGap(84, Short.MAX_VALUE))
-				);
+						.addGroup(pnlDragLayout.createSequentialGroup()
+								.addGap(78, 78, 78)
+								.addComponent(lblDragHere)
+								.addContainerGap(84, Short.MAX_VALUE)));
 
 		btnCancel.setText("Cancel");
 		btnCancel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -258,108 +262,138 @@ public class AddElement extends javax.swing.JFrame {
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
+
 		layout.setHorizontalGroup(
 				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(layout.createSequentialGroup()
-					.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 						.addGroup(layout.createSequentialGroup()
-							.addGap(30, 30, 30)
-							.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-								.addGroup(layout.createSequentialGroup()
-									.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-										.addComponent(lblProject)
-										.addComponent(lblNameElement))
-									.addGap(18, 18, 18)
-									.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-										.addComponent(txtNameElement)
-										.addComponent(cmbProject, 0, 255, Short.MAX_VALUE)))
-								.addComponent(pnlDrag, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-						.addGroup(layout.createSequentialGroup()
-							.addGap(112, 112, 112)
-							.addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-							.addGap(26, 26, 26)
-							.addComponent(btnOk, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
-					.addGap(59, 59, 59)
-					.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-						.addComponent(jRadioButton6)
-						.addComponent(jRadioButton5)
-						.addComponent(jRadioButton4)
-						.addComponent(jRadioButton3)
-						.addComponent(rdbArg)
-						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-							.addComponent(lblFilter)
-							.addComponent(jRadioButton2))
-						.addGroup(layout.createSequentialGroup()
-							.addComponent(lblConnections)
-							.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-							.addComponent(txtNconnections, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addGroup(layout.createSequentialGroup()
-							.addComponent(lblSize)
-							.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-							.addComponent(txtSize, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(28, Short.MAX_VALUE))
-					);
+								.addGap(30, 30, 30)
+								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+										// Name and Project Section
+										.addGroup(layout.createSequentialGroup()
+												.addGroup(layout
+														.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+														.addComponent(lblNameElement)
+														.addComponent(lblProjectTxt)) // "Project:" Label
+												.addGap(18, 18, 18)
+												.addGroup(layout
+														.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING,
+																false)
+														.addComponent(txtNameElement,
+																javax.swing.GroupLayout.DEFAULT_SIZE, 200,
+																Short.MAX_VALUE)
+														.addComponent(lblProject, javax.swing.GroupLayout.DEFAULT_SIZE,
+																200, Short.MAX_VALUE))) // Empty Box
+
+										.addComponent(pnlDrag, javax.swing.GroupLayout.PREFERRED_SIZE,
+												javax.swing.GroupLayout.DEFAULT_SIZE,
+												javax.swing.GroupLayout.PREFERRED_SIZE)
+
+										.addGroup(layout.createSequentialGroup()
+												.addGap(50, 50, 50)
+												.addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 80,
+														javax.swing.GroupLayout.PREFERRED_SIZE)
+												.addGap(18, 18, 18)
+												.addComponent(btnOk, javax.swing.GroupLayout.PREFERRED_SIZE, 80,
+														javax.swing.GroupLayout.PREFERRED_SIZE)))
+
+								.addGap(60, 60, 60) // Gap between the form and filters
+
+								// Filter Section (Radio Buttons)
+								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+										.addComponent(lblFilter)
+										.addComponent(rdbArg)
+										.addComponent(jRadioButton2)
+										.addComponent(jRadioButton3)
+										.addComponent(jRadioButton4)
+										.addComponent(jRadioButton5)
+										.addComponent(jRadioButton6)
+										.addGroup(layout.createSequentialGroup()
+												.addComponent(lblConnections)
+												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+												.addComponent(txtNconnections, javax.swing.GroupLayout.PREFERRED_SIZE,
+														60, javax.swing.GroupLayout.PREFERRED_SIZE))
+										.addGroup(layout.createSequentialGroup()
+												.addComponent(lblSize)
+												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+												.addComponent(txtSize, javax.swing.GroupLayout.PREFERRED_SIZE, 60,
+														javax.swing.GroupLayout.PREFERRED_SIZE)))
+								.addContainerGap(40, Short.MAX_VALUE)));
+
 		layout.setVerticalGroup(
 				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(layout.createSequentialGroup()
-					.addGap(23, 23, 23)
-					.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-						.addComponent(lblNameElement)
-						.addComponent(lblFilter)
-						.addComponent(txtNameElement, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-					.addGap(18, 18, 18)
-					.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-						.addComponent(lblProject)
-						.addComponent(rdbArg)
-						.addComponent(cmbProject, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-					.addGap(18, 18, 18)
-					.addComponent(jRadioButton2)
-					.addGap(18, 18, 18)
-					.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 						.addGroup(layout.createSequentialGroup()
-							.addComponent(jRadioButton3)
-							.addGap(18, 18, 18)
-							.addComponent(jRadioButton4)
-							.addGap(18, 18, 18)
-							.addComponent(jRadioButton5)
-							.addGap(18, 18, 18)
-							.addComponent(jRadioButton6)
-							.addGap(18, 18, 18)
-							.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(txtNconnections, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblConnections))
-							.addGap(18, 18, 18)
-							.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(txtSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblSize)))
-						.addGroup(layout.createSequentialGroup()
-							.addComponent(pnlDrag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-							.addGap(18, 18, 18)
-							.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(btnCancel)
-								.addComponent(btnOk))))
-								.addContainerGap(59, Short.MAX_VALUE))
-								);
-
+								.addGap(25, 25, 25)
+								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+										.addComponent(lblNameElement)
+										.addComponent(txtNameElement, javax.swing.GroupLayout.PREFERRED_SIZE,
+												javax.swing.GroupLayout.DEFAULT_SIZE,
+												javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addComponent(lblFilter)) // Filter title at the top
+								.addGap(18, 18, 18)
+								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+										.addComponent(lblProjectTxt)
+										.addComponent(lblProject, javax.swing.GroupLayout.PREFERRED_SIZE,
+												javax.swing.GroupLayout.DEFAULT_SIZE,
+												javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addComponent(rdbArg))
+								.addGap(12, 12, 12)
+								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+										// Left side: Drag panel and buttons
+										.addGroup(layout.createSequentialGroup()
+												.addComponent(pnlDrag, javax.swing.GroupLayout.PREFERRED_SIZE,
+														javax.swing.GroupLayout.DEFAULT_SIZE,
+														javax.swing.GroupLayout.PREFERRED_SIZE)
+												.addGap(18, 18, 18)
+												.addGroup(layout
+														.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+														.addComponent(btnCancel)
+														.addComponent(btnOk)))
+										// Right side: All the Select Boxes
+										.addGroup(layout.createSequentialGroup()
+												.addComponent(jRadioButton2)
+												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+												.addComponent(jRadioButton3)
+												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+												.addComponent(jRadioButton4)
+												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+												.addComponent(jRadioButton5)
+												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+												.addComponent(jRadioButton6)
+												.addGap(18, 18, 18)
+												.addGroup(layout
+														.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+														.addComponent(lblConnections)
+														.addComponent(txtNconnections,
+																javax.swing.GroupLayout.PREFERRED_SIZE,
+																javax.swing.GroupLayout.DEFAULT_SIZE,
+																javax.swing.GroupLayout.PREFERRED_SIZE))
+												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+												.addGroup(layout
+														.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+														.addComponent(lblSize)
+														.addComponent(txtSize, javax.swing.GroupLayout.PREFERRED_SIZE,
+																javax.swing.GroupLayout.DEFAULT_SIZE,
+																javax.swing.GroupLayout.PREFERRED_SIZE))))
+								.addContainerGap(30, Short.MAX_VALUE)));
 		setSize(new java.awt.Dimension(660, 471));
 		setLocationRelativeTo(null);
 	}// </editor-fold>
 
-	private void cmbProjectActionPerformed(java.awt.event.ActionEvent evt) {                                           
+	private void cmbProjectActionPerformed(java.awt.event.ActionEvent evt) {
 		// TODO add your handling code here:
-	}                                          
+	}
 
-	private void rdbArgActionPerformed(java.awt.event.ActionEvent evt) {                                       
+	private void rdbArgActionPerformed(java.awt.event.ActionEvent evt) {
 		// TODO add your handling code here:
-	}                                      
+	}
 
-	private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {                                      
+	private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {
 		add();
-	}                                     
+	}
 
-	private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {                                          
+	private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {
 		dispose();
-	}                                         
+	}
 
 	public static void main(String args[]) {
 		try {
@@ -372,16 +406,15 @@ public class AddElement extends javax.swing.JFrame {
 		} catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
 			logger.log(java.util.logging.Level.SEVERE, null, ex);
 		}
-		//</editor-fold>
+		// </editor-fold>
 
 		/* Create and display the form */
 		java.awt.EventQueue.invokeLater(() -> new AddElement().setVisible(true));
 	}
 
-	// Variables declaration - do not modify                     
+	// Variables declaration - do not modify
 	private javax.swing.JButton btnCancel;
 	private javax.swing.JButton btnOk;
-	private javax.swing.JComboBox<String> cmbProject;
 	private javax.swing.JRadioButton jRadioButton2;
 	private javax.swing.JRadioButton jRadioButton3;
 	private javax.swing.JRadioButton jRadioButton4;
@@ -391,13 +424,14 @@ public class AddElement extends javax.swing.JFrame {
 	private javax.swing.JLabel lblDragHere;
 	private javax.swing.JLabel lblFilter;
 	private javax.swing.JLabel lblNameElement;
-	private javax.swing.JLabel lblProject;
+	private javax.swing.JLabel lblProjectTitle;
+	private javax.swing.JTextField lblProject;
+	private javax.swing.JLabel lblProjectTxt;
 	private javax.swing.JLabel lblSize;
 	private javax.swing.JPanel pnlDrag;
 	private javax.swing.JRadioButton rdbArg;
 	private javax.swing.JTextField txtNameElement;
 	private javax.swing.JTextField txtNconnections;
 	private javax.swing.JTextField txtSize;
-	// End of variables declaration                   
+	// End of variables declaration
 }
-

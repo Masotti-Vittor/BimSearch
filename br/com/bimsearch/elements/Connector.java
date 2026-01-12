@@ -12,8 +12,8 @@ public class Connector {
 	private boolean aereo;
 	private int tamanho;
 	private String nameId;
-
-	public Connector(String imagePath, int numeroConexoes, boolean argola, boolean cabo, boolean conduite, boolean caboConduite, boolean equipamento, boolean aereo, int tamanho, String nameId) {
+	private String project;
+	public Connector(String imagePath, int numeroConexoes, boolean argola, boolean cabo, boolean conduite, boolean caboConduite, boolean equipamento, boolean aereo, int tamanho, String nameId, String project) {
 		this.imagePath = imagePath;
 		this.numeroConexoes = numeroConexoes;
 		this.argola = argola;
@@ -24,6 +24,11 @@ public class Connector {
 		this.aereo = aereo;
 		this.tamanho = tamanho;
 		this.nameId = nameId;
+		this.project = project;
+	}
+
+	public String getProject() {
+		return project;
 	}
 
 	public String getImagePath() {

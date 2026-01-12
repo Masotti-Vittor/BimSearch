@@ -29,7 +29,7 @@ public class DataBaseSetup {
 				}
 
 				// 3. Grant privileges and flush
-				stmt.executeUpdate("CREATE TABLE IF NOT EXISTS images (id IDENTITY PRIMARY KEY, image_path VARCHAR(400), numero_conexoes INT, argola BOOLEAN, cabo BOOLEAN, conduite BOOLEAN, cabo_conduite BOOLEAN, equipamento BOOLEAN, aereo BOOLEAN, tamanho INT, nameId VARCHAR(255))");
+				stmt.executeUpdate("CREATE TABLE IF NOT EXISTS images (id IDENTITY PRIMARY KEY, image_path VARCHAR(400), numero_conexoes INT, argola BOOLEAN, cabo BOOLEAN, conduite BOOLEAN, cabo_conduite BOOLEAN, equipamento BOOLEAN, aereo BOOLEAN, tamanho INT, nameId VARCHAR(255), project VARCHAR(50) NOT NULL)");
 				System.out.println("Database and user setup completed.");
 
 			}

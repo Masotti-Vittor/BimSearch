@@ -5,34 +5,40 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
-
+import br.com.bimsearch.windows.SearchWindow;
 @SuppressWarnings("unused")
 public class ListPane extends javax.swing.JInternalFrame {
 
 	private List<Connector> elementos;
-	private ImagesPane imagesPane; 
+	private ImagesPane imagesPane;
+	private SearchWindow searchWindow; 
+	// Since the list has the objective of showing buttons with the matches, its constructor receives a parameter of the type ImagesPane.
 
-	// Since the list has the objective of showing buttons with the matches, its constructor reveives a parameter of the type ImagesPane.
-	public ListPane(ImagesPane imagesPane) {
-		this.imagesPane = imagesPane;
-		initComponents();
-	}
+	public ListPane(ImagesPane imgPane, SearchWindow searchWindow) {
+        this.imagesPane = imgPane; 
+        this.searchWindow = searchWindow;
+        initComponents();
+    }
 	
 	//This method, called from the SearchWindow class, updates the list with the new matches between the database and filters. 
 	//The parameters received are: 
 	//A list with elements created in the Connector class. Each element contains its specs and image path.
 	//The ImagePane is used to display the image when a button is clicked in the list. 
 
-	public void updateList(List<Connector> elementos, ImagesPane imagesPane) {
+	// Remove the extra parameters, use the ones stored in "this"
+	public void updateList(List<Connector> elementos) {
 		this.elementos = elementos;
 		sclPanel.removeAll(); 
 
-		// for each element in his list, create a button that, when clicked, shows the corresponding image.
 		for (Connector c : elementos) {
 			JButton btn = new JButton(c.getNameId());
 			btn.setAlignmentX(Component.CENTER_ALIGNMENT);
+			
 			btn.addActionListener(e -> {
-				imagesPane.showImage(c.getImagePath());
+				// Use the class-level variables (this.searchWindow and this.imagesPane)
+				this.imagesPane.showImage(c.getImagePath());
+				searchWindow.lblId.setText("ID: " + c.getNameId());
+				searchWindow.lblProject.setText("Project: " + c.getProject());
 			}); 
 			sclPanel.add(btn);
 		}

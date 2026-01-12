@@ -1,4 +1,5 @@
 package br.com.bimsearch.windows;
+
 import br.com.bimsearch.elements.Connector;
 import br.com.bimsearch.dal.DataAccessLayer;
 import br.com.bimsearch.windows.SearchFilter;
@@ -9,13 +10,14 @@ import br.com.bimsearch.windows.ImagesPane;
 import br.com.bimsearch.windows.AddElement;
 import javax.swing.JOptionPane;
 import java.util.ArrayList;
+import java.awt.Color;
 import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
 
 /**
  * @author wasotty
-**/
+ **/
 
 @SuppressWarnings("unused")
 public class SearchWindow extends javax.swing.JFrame {
@@ -23,51 +25,70 @@ public class SearchWindow extends javax.swing.JFrame {
 	private int size = 0, nCon = 0;
 	private SizeConnecWindow sc; // Will be used to get the infos/inputs of the user from another window.
 
-	// The list and images variables will be used to access methods from the classes ListPane and ImagesPane.
-	// Also, list and images are necessary to trigger/call their windows' elements. 
+	// The list and images variables will be used to access methods from the classes
+	// ListPane and ImagesPane.
+	// Also, list and images are necessary to trigger/call their windows' elements.
 	private ListPane list, listSearch;
-	private ImagesPane images; 
+	private ImagesPane images;
 	private Connector c;
-	private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(SearchWindow.class.getName());
+	private static final java.util.logging.Logger logger = java.util.logging.Logger
+			.getLogger(SearchWindow.class.getName());
 
-	// Same as in the other classes; we declare these variables to work with de sql database.
+	// Same as in the other classes; we declare these variables to work with de sql
+	// database.
 	Connection conec = null;
 	PreparedStatement pst = null;
 	ResultSet rs = null;
 
 	public SearchWindow() {
 		initComponents();
-		
+		this.setResizable(false);
+
 		// Here we are connecting our "bridge" between our database and java classes.
 		conec = DataAccessLayer.connector();
 
-		// The window where the image will showup belongs inside a main window, our SearchWindow. 
+		// The window where the image will showup belongs inside a main window, our
+		// SearchWindow.
 		images = new ImagesPane();
 		images.setVisible(true);
 		desktop.add(images);
 
-		// Just like above, when SearchWindow runs, these internal windows will be created. An internal Jframe. 
-		list = new ListPane(images);
+		// Just like above, when SearchWindow runs, these internal windows will be
+		// created. An internal Jframe.
+		list = new ListPane(images, this);
 		list.setVisible(true);
 		desktopList.add(list);
 
-		// "(this)" is necessary, because the constructor of SizeConnecWindow requires a SearchWindow parameter.
+		// "(this)" is necessary, because the constructor of SizeConnecWindow requires a
+		// SearchWindow parameter.
 		sc = new SizeConnecWindow(this);
 
 		SearchFilter filterWindow = new SearchFilter(this);
 		filterWindow.setVisible(true);
-		// lambdas with the same job as the actionslisteners. I made them so each time we use a checkbox, the list updates. 
+
+		// lambdas with the same job as the actionslisteners. I made them so each time
+		// we use a checkbox, the list updates.
 		jCheckBoxMenuItem1.addActionListener(e -> receiveFilter());
 		menFilCaCa.addActionListener(e -> receiveFilter());
 		menFilCoCo.addActionListener(e -> receiveFilter());
 		menFilCaCo.addActionListener(e -> receiveFilter());
 		menFilEqu.addActionListener(e -> receiveFilter());
 		menFilAer.addActionListener(e -> receiveFilter());
-	}	
-	
+
+		menDel.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				DeleteWindow del = new DeleteWindow(SearchWindow.this);
+				del.setVisible(true);
+				del.toFront();
+			}
+		});
+
+	}
+
 	// A method that will be called each time the checkboxes are triggered.
-	public void receiveFilter(){
-		argola = jCheckBoxMenuItem1.isSelected(); 
+	public void receiveFilter() {
+		argola = jCheckBoxMenuItem1.isSelected();
 		cabo = menFilCaCa.isSelected();
 		conduite = menFilCoCo.isSelected();
 		caboConduite = menFilCaCo.isSelected();
@@ -75,35 +96,44 @@ public class SearchWindow extends javax.swing.JFrame {
 		aereo = menFilAer.isSelected();
 		updateFilteredList();
 	}
-	
-	// Just like above, this method is part of the filter. 
-	public void receiveFilterSize(int sizeEl, int nConnect){
+
+	// Just like above, this method is part of the filter.
+	public void receiveFilterSize(int sizeEl, int nConnect) {
 		this.size = sizeEl;
 		this.nCon = nConnect;
 		updateFilteredList();
 	}
 
-
-	// This one verifies and matches the infos of the filter and the table "images" in the database.
+	// This one verifies and matches the infos of the filter and the table "images"
+	// in the database.
 
 	public void updateFilteredList() {
 		List<Connector> connectors = new ArrayList<>();
 
-		// Different from the other classes, we're using StringBuilder. 
-		// It is because String is immutable, but not a StringBuilder. This allow a more efficient code due to the ifs.
+		// Different from the other classes, we're using StringBuilder.
+		// It is because String is immutable, but not a StringBuilder. This allow a more
+		// efficient code due to the ifs.
 		StringBuilder sql = new StringBuilder("SELECT * FROM images WHERE TRUE=TRUE");
-		 
-		if (nCon > 0) sql.append(" AND numero_conexoes = ").append(nCon);
-		if (size > 0) sql.append(" AND tamanho = ").append(size);
-		if (argola) sql.append(" AND argola = TRUE");
-		if (cabo) sql.append(" AND cabo = TRUE");
-		if (conduite) sql.append(" AND conduite = TRUE");
-		if (caboConduite) sql.append(" AND cabo_conduite = TRUE");
-		if (equipamento) sql.append(" AND equipamento = TRUE");
-		if (aereo) sql.append(" AND aereo = TRUE");
+
+		if (nCon > 0)
+			sql.append(" AND numero_conexoes = ").append(nCon);
+		if (size > 0)
+			sql.append(" AND tamanho = ").append(size);
+		if (argola)
+			sql.append(" AND argola = TRUE");
+		if (cabo)
+			sql.append(" AND cabo = TRUE");
+		if (conduite)
+			sql.append(" AND conduite = TRUE");
+		if (caboConduite)
+			sql.append(" AND cabo_conduite = TRUE");
+		if (equipamento)
+			sql.append(" AND equipamento = TRUE");
+		if (aereo)
+			sql.append(" AND aereo = TRUE");
 
 		try {
-			pst = conec.prepareStatement(sql.toString()); // .toString() because the prepareStatement requires a string.  
+			pst = conec.prepareStatement(sql.toString()); // .toString() because the prepareStatement requires a string.
 			rs = pst.executeQuery();
 
 			// If there are matches.
@@ -118,21 +148,20 @@ public class SearchWindow extends javax.swing.JFrame {
 						rs.getBoolean("equipamento"),
 						rs.getBoolean("aereo"),
 						rs.getInt("tamanho"),
-						rs.getString("nameId")
-						);
+						rs.getString("nameId"),
+						rs.getString("project"));
 				connectors.add(conn);
 				System.out.println("Image path: " + rs.getString("image_path"));
 
 			}
 
-			list.updateList(connectors, images); // Update the list with the matches.
+			list.updateList(connectors); // Update the list with the matches.
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Erro ao buscar elementos: " + e.getMessage());
 		}
 	}
 
-
-	public void searchEl(String nameId){
+	public void searchEl(String nameId) {
 		String sql = "SELECT * FROM images WHERE nameId=?";
 		List<Connector> connectorSearch = new ArrayList<>();
 		try {
@@ -151,112 +180,125 @@ public class SearchWindow extends javax.swing.JFrame {
 						rs.getBoolean("equipamento"),
 						rs.getBoolean("aereo"),
 						rs.getInt("tamanho"),
-						rs.getString("nameId")
-						);
+						rs.getString("nameId"),
+						rs.getString("project"));
+
 				connectorSearch.add(c);
 				System.out.println("Image path: " + rs.getString("image_path"));
 			} else {
 				System.out.println("No result found.");
 			}
 
-			list.updateList(connectorSearch, images);
+			list.updateList(connectorSearch);
 
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e);
 		}
 	}
 
+	// The GUI your about to see was created with NetBeans. Here, what I coded are
+	// the actionListeners. Not lambdas because the structure was already partially
+	// done. In the next update of the code, I may code it with lambdas.
 
-	// The GUI your about to see was created with NetBeans. Here, what I coded are the actionListeners. Not lambdas because the structure was already partially done. In the next update of the code, I may code it with lambdas.
-	
 	/**
 	 * This method is called from within the constructor to initialize the form.
 	 * WARNING: Do NOT modify this code. The content of this method is always
 	 * regenerated by the Form Editor.
 	 */
 
-	// <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+	// <editor-fold defaultstate="collapsed" desc="Generated Code">
 
 	private void initComponents() {
 
-	jScrollPane1 = new javax.swing.JScrollPane();
-	desktop = new javax.swing.JDesktopPane();
-	desktopList = new javax.swing.JDesktopPane();
-	lblId = new javax.swing.JLabel();
-	lblProject = new javax.swing.JLabel();
-	btnAddEl = new javax.swing.JButton();
-	lblBy1 = new javax.swing.JLabel();
-	jMenuBar1 = new javax.swing.JMenuBar();
-	menSea = new javax.swing.JMenu();
-	menSea2 = new javax.swing.JMenuItem();
-	menFilArg = new javax.swing.JMenu();
-	jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
-	menFilCaCa = new javax.swing.JCheckBoxMenuItem();
-	menFilCoCo = new javax.swing.JCheckBoxMenuItem();
-	menFilCaCo = new javax.swing.JCheckBoxMenuItem();
-	menFilEqu = new javax.swing.JCheckBoxMenuItem();
-	menFilAer = new javax.swing.JCheckBoxMenuItem();
-	menSizCon = new javax.swing.JMenuItem();
-	menAdm = new javax.swing.JMenu();
-	menAdmAdd = new javax.swing.JMenuItem();
-	menInf = new javax.swing.JMenu();
-	menInfAbo = new javax.swing.JMenuItem();
-	menOpt = new javax.swing.JMenu();
-	menOptExi = new javax.swing.JMenuItem();
-	menOptHel = new javax.swing.JMenuItem();
+		jScrollPane1 = new javax.swing.JScrollPane();
+		desktop = new javax.swing.JDesktopPane();
+		desktopList = new javax.swing.JDesktopPane();
+		lblId = new javax.swing.JTextField();
+		lblProject = new javax.swing.JTextField();
+		btnAddEl = new javax.swing.JButton();
+		lblBy1 = new javax.swing.JLabel();
+		jMenuBar1 = new javax.swing.JMenuBar();
+		menSea = new javax.swing.JMenu();
+		menDel = new javax.swing.JMenu();
+		menSea2 = new javax.swing.JMenuItem();
+		menFilArg = new javax.swing.JMenu();
+		jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
+		menFilCaCa = new javax.swing.JCheckBoxMenuItem();
+		menFilCoCo = new javax.swing.JCheckBoxMenuItem();
+		menFilCaCo = new javax.swing.JCheckBoxMenuItem();
+		menFilEqu = new javax.swing.JCheckBoxMenuItem();
+		menFilAer = new javax.swing.JCheckBoxMenuItem();
+		menSizCon = new javax.swing.JMenuItem();
+		menAdm = new javax.swing.JMenu();
+		menAdmAdd = new javax.swing.JMenuItem();
+		menInf = new javax.swing.JMenu();
+		menInfAbo = new javax.swing.JMenuItem();
+		menOpt = new javax.swing.JMenu();
+		menOptExi = new javax.swing.JMenuItem();
+		menOptHel = new javax.swing.JMenuItem();
 
-	setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-	setTitle("Bim Search");
+		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+		setTitle("Bim Search");
 
-	javax.swing.GroupLayout desktopLayout = new javax.swing.GroupLayout(desktop);
-	desktop.setLayout(desktopLayout);
-	desktopLayout.setHorizontalGroup(
-			desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-			.addGap(0, 350, Short.MAX_VALUE)
-			);
-	desktopLayout.setVerticalGroup(
-			desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-			.addGap(0, 0, Short.MAX_VALUE)
-			);
+		javax.swing.GroupLayout desktopLayout = new javax.swing.GroupLayout(desktop);
+		desktop.setLayout(desktopLayout);
+		desktopLayout.setHorizontalGroup(
+				desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+						.addGap(0, 350, Short.MAX_VALUE));
+		desktopLayout.setVerticalGroup(
+				desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+						.addGap(0, 0, Short.MAX_VALUE));
 
-	javax.swing.GroupLayout desktopListLayout = new javax.swing.GroupLayout(desktopList);
-	desktopList.setLayout(desktopListLayout);
-	desktopListLayout.setHorizontalGroup(
-			desktopListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-			.addGap(0, 270, Short.MAX_VALUE)
-			);
-	desktopListLayout.setVerticalGroup(
-			desktopListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-			.addGap(0, 571, Short.MAX_VALUE)
-			);
+		javax.swing.GroupLayout desktopListLayout = new javax.swing.GroupLayout(desktopList);
+		desktopList.setLayout(desktopListLayout);
+		desktopListLayout.setHorizontalGroup(
+				desktopListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+						.addGap(0, 270, Short.MAX_VALUE));
+		desktopListLayout.setVerticalGroup(
+				desktopListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+						.addGap(0, 571, Short.MAX_VALUE));
 
-	lblId.setFont(new java.awt.Font("Cantarell", 0, 18)); // NOI18N
-	lblId.setText("ID:");
+		lblId.setFont(new java.awt.Font("Cantarell", 0, 18)); // NOI18N
+		lblId.setText("ID: ");
+		lblId.setEditable(false);
+		lblId.setBorder(null);
+		lblId.setOpaque(false);
+		lblId.setBackground(new Color(0, 0, 0, 0));
+		lblId.setPreferredSize(new java.awt.Dimension(200, 30));
 
-	lblProject.setFont(new java.awt.Font("Cantarell", 0, 18)); // NOI18N
-	lblProject.setText("Project:");
+		lblProject.setFont(new java.awt.Font("Cantarell", 0, 18));
+		lblProject.setText("");
+		lblProject.setEditable(false);
+		lblProject.setBorder(null); // Removes the box border
+		lblProject.setOpaque(false);
+		lblProject.setPreferredSize(new java.awt.Dimension(300, 30));
 
-	btnAddEl.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/bimsearch/windows/images/searchIcons/add.png"))); // NOI18N
-	btnAddEl.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-	btnAddEl.addActionListener(new java.awt.event.ActionListener() {
-		public void actionPerformed(java.awt.event.ActionEvent evt) {
-			btnAddElAddActionPerformed(evt);
-		}
-	});
+		btnAddEl.setIcon(new javax.swing.ImageIcon(
+				getClass().getResource("/br/com/bimsearch/windows/images/searchIcons/add.png"))); // NOI18N
+		btnAddEl.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+		btnAddEl.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				btnAddElAddActionPerformed(evt);
+			}
+		});
 
-	lblBy1.setFont(new java.awt.Font("Cantarell", 1, 24)); // NOI18N
-	lblBy1.setText("Add Element");
+		lblBy1.setFont(new java.awt.Font("Cantarell", 1, 24)); // NOI18N
+		lblBy1.setText("Add Element");
 
-	menSea.setText("Search");
-	menSea2.addActionListener(new java.awt.event.ActionListener() {
-		public void actionPerformed(java.awt.event.ActionEvent evt) {
-			menSea2ActionPerformed(evt);
-		}
+		menSea.setText("Search");
+
+		menSea2.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				menSea2ActionPerformed(evt);
+			}
 		});
 
 		jMenuBar1.add(menSea);
 		menSea2.setText("Search Option");
 		menSea.add(menSea2);
+
+		menDel.setText("Delete");
+		jMenuBar1.add(menDel);
 
 		menFilArg.setText("Filters");
 		menSizCon.addActionListener(new java.awt.event.ActionListener() {
@@ -264,7 +306,6 @@ public class SearchWindow extends javax.swing.JFrame {
 				menSizConActionPerformed(evt);
 			}
 		});
-
 
 		jCheckBoxMenuItem1.setSelected(true);
 		jCheckBoxMenuItem1.setText("Ring");
@@ -303,6 +344,7 @@ public class SearchWindow extends javax.swing.JFrame {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				menAdmAddActionPerformed(evt);
 			}
+
 		});
 		menAdm.add(menAdmAdd);
 
@@ -321,6 +363,7 @@ public class SearchWindow extends javax.swing.JFrame {
 				menInfAboActionPerformed(evt);
 			}
 		});
+
 		menInf.add(menInfAbo);
 
 		jMenuBar1.add(menInf);
@@ -346,92 +389,106 @@ public class SearchWindow extends javax.swing.JFrame {
 		getContentPane().setLayout(layout);
 		layout.setHorizontalGroup(
 				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(layout.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(desktop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-					.addComponent(desktopList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-					.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 						.addGroup(layout.createSequentialGroup()
-							.addGap(55, 55, 55)
-							.addComponent(lblBy1)
-							.addGap(0, 56, Short.MAX_VALUE))
-						.addGroup(layout.createSequentialGroup()
-							.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-							.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addComponent(lblId)
-								.addComponent(lblProject))
-							.addContainerGap(178, Short.MAX_VALUE))
-						.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-							.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnAddEl)
-							.addGap(93, 93, 93))))
-				);
+								.addContainerGap()
+								.addComponent(desktop, javax.swing.GroupLayout.PREFERRED_SIZE,
+										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+								.addComponent(desktopList, javax.swing.GroupLayout.PREFERRED_SIZE,
+										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+										.addGroup(layout.createSequentialGroup()
+												.addGap(55, 55, 55) // Push the whole column from the left
+
+												// This is the "Sub-Group" that centers the Label and Button
+												.addGroup(layout
+														.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+														.addComponent(lblBy1)
+														.addComponent(btnAddEl))
+
+												.addGap(55, 55, 55)) // Space to the right
+										.addGroup(layout.createSequentialGroup()
+												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+												.addGroup(layout
+														.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+														.addComponent(lblId)
+														.addComponent(lblProject))
+												.addContainerGap(178, Short.MAX_VALUE))
+										.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout
+												.createSequentialGroup()
+												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+														javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+												.addComponent(btnAddEl)
+												.addGap(93, 93, 93)))));
 		layout.setVerticalGroup(
 				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-						.addComponent(desktop)
-						.addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-							.addComponent(lblId)
-							.addGap(58, 58, 58)
-							.addComponent(lblProject)
-							.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(lblBy1)
-							.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-							.addComponent(btnAddEl)
-							.addGap(62, 62, 62))
-						.addComponent(desktopList))
-					.addContainerGap())
-				);
+						.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+								.addContainerGap()
+								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+										.addComponent(desktop)
+										.addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout
+												.createSequentialGroup()
+												.addComponent(lblId)
+												.addGap(58, 58, 58)
+												.addComponent(lblProject)
+												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+														javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+												.addComponent(lblBy1)
+												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+												.addComponent(btnAddEl)
+												.addGap(62, 62, 62))
+										.addComponent(desktopList))
+								.addContainerGap()));
 
 		setSize(new java.awt.Dimension(900, 639));
 		setLocationRelativeTo(null);
 	}// </editor-fold>
 
-
-	private void menOptExiActionPerformed(java.awt.event.ActionEvent evt) {                                          
-		int exit = JOptionPane.showConfirmDialog(null, "Are you sure you want to leave?","Yo!", JOptionPane.YES_NO_OPTION);
-		if(exit == JOptionPane.YES_OPTION){
+	private void menOptExiActionPerformed(java.awt.event.ActionEvent evt) {
+		int exit = JOptionPane.showConfirmDialog(null, "Are you sure you want to leave?", "Yo!",
+				JOptionPane.YES_NO_OPTION);
+		if (exit == JOptionPane.YES_OPTION) {
 			System.exit(0);
 		}
-	}                                         
+	}
 
-	// methods which will run when its buttoms are pressed. 
-	
-	private void menInfActionPerformed(java.awt.event.ActionEvent evt) {                                       
+	// methods which will run when its buttons are pressed.
+
+	private void menInfActionPerformed(java.awt.event.ActionEvent evt) {
 		WindowInfo about = new WindowInfo();
 		about.setVisible(true);
-	}                                      
+	}
 
-	private void menInfAboActionPerformed(java.awt.event.ActionEvent evt) {                                          
+	private void menInfAboActionPerformed(java.awt.event.ActionEvent evt) {
 		WindowInfo about = new WindowInfo();
 		about.setVisible(true);
-	}                                         
+	}
 
-	private void menAdmAddActionPerformed(java.awt.event.ActionEvent evt) {                                          
+	private void menAdmAddActionPerformed(java.awt.event.ActionEvent evt) {
 		User users = new User();
 		users.setVisible(true);
-	}                                         
-	
-	private void btnAddElAddActionPerformed(java.awt.event.ActionEvent evt) {                                          
+	}
+
+	private void btnAddElAddActionPerformed(java.awt.event.ActionEvent evt) {
 		AddElement element = new AddElement();
 		element.setVisible(true);
-	}                                 
+	}
 
-	private void menSizConActionPerformed(java.awt.event.ActionEvent evt) {                                          
+	private void setIdTxtAddActionPerformed(java.awt.event.ActionEvent evt) {
+		lblId.setText(c.getNameId());
+	}
+
+	private void menSizConActionPerformed(java.awt.event.ActionEvent evt) {
 		SizeConnecWindow sc = new SizeConnecWindow(this);
 		sc.setVisible(true);
-	}                                         
+	}
 
-	private void menSea2ActionPerformed(java.awt.event.ActionEvent evt) {                                       
+	private void menSea2ActionPerformed(java.awt.event.ActionEvent evt) {
 		SearchFilter searchfilter = new SearchFilter(this);
 		searchfilter.setVisible(true);
-	}                                      
+	}
 
-
-	// Main created by NetBeans. 
+	// Main created by NetBeans.
 	public static void main(String args[]) {
 		try {
 			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -443,13 +500,13 @@ public class SearchWindow extends javax.swing.JFrame {
 		} catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
 			logger.log(java.util.logging.Level.SEVERE, null, ex);
 		}
-		//</editor-fold>
+		// </editor-fold>
 
 		/* Create and display the form */
 		java.awt.EventQueue.invokeLater(() -> new SearchWindow().setVisible(true));
 	}
 
-	// Variables declaration - do not modify                     
+	// Variables declaration - do not modify
 	private javax.swing.JButton btnAddEl;
 	private javax.swing.JDesktopPane desktop;
 	private javax.swing.JDesktopPane desktopList;
@@ -457,8 +514,8 @@ public class SearchWindow extends javax.swing.JFrame {
 	private javax.swing.JMenuBar jMenuBar1;
 	private javax.swing.JScrollPane jScrollPane1;
 	private javax.swing.JLabel lblBy1;
-	private javax.swing.JLabel lblId;
-	private javax.swing.JLabel lblProject;
+	public javax.swing.JTextField lblId;
+	public javax.swing.JTextField lblProject;
 	public static javax.swing.JMenu menAdm;
 	private javax.swing.JMenuItem menAdmAdd;
 	private javax.swing.JCheckBoxMenuItem menFilAer;
@@ -473,10 +530,8 @@ public class SearchWindow extends javax.swing.JFrame {
 	private javax.swing.JMenuItem menOptExi;
 	private javax.swing.JMenuItem menOptHel;
 	private javax.swing.JMenu menSea;
+	private javax.swing.JMenu menDel;
 	private javax.swing.JMenuItem menSea2;
 	private javax.swing.JMenuItem menSizCon;
-	// End of variables declaration                   
+	// End of variables declaration
 }
-
-
-
