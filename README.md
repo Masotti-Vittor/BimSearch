@@ -17,6 +17,7 @@ The solution:
 
 ---
 
+<<<<<<< HEAD
 ### REQUIREMENTS
          
 	* You must have Java 25 installed on your machine. 
@@ -42,3 +43,36 @@ The solution:
 # **But I hope this project may show my interest in learning and my desire to do more, since I work at a company where computer science isn’t the main field.**
 
 # **I also hope this project can bring you some value to you. Thank you! I’ll be working on more projects and posting them here!**
+=======
+```
+• How to clone and use this project
+
+```
+
+### REQUIREMENTS
+          You must have MySQL on your machine. I installed MariaDB.
+          I still do not have the knowledge to work and fix absolute paths. Thus, you may change the paths to yours, in the following files:
+
+- BimSearch.desktop, install.sh, launch_bimsearch.sh.
+
+Easier way:
+
+- If you do not want to change the paths in the files (to use the desktop executable), you may just run the .jar folder, which has all the compiled classes.
+Command to run the program: **jar cfm app-fat.jar manifest.txt -C tmp .**
+// You must be inside the folder/directory “dataBaseInternship”, and then run the command.
+
+After you clone the project to your machine, and initialize your MySQL, you may start the program. 
+
+— A data base will be created when the program runs for the first time. This data base contains two tables, one which contains the users, and another that has the images information. 
+
+— *An initial user is also added to the users table. To log in the program, you must use the following credentials
+**Login: admin***
+
+***Password: admin1***  
+
+# **For reasons of confidentiality and exclusivity at the company, future updates won’t be pushed here.**
+
+# **But I hope this project — even unfinished — can show my interest in learning and my desire to do more, since I work at a company where computer science isn’t the main field.**
+
+# **I also hope this project can bring you some value. Thank you! I’ll be working on more projects and posting them here!**
+>>>>>>> b3f1c6e7125fac1b6d7b1cd4892413e571eb1491

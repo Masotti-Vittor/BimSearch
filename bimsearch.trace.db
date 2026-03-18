@@ -53,6 +53,7 @@ Caused by: org.h2.jdbc.JdbcSQLInvalidAuthorizationSpecException: Wrong user name
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:522)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
 	... 40 more
+<<<<<<< HEAD
 2026-03-18 08:46:25.382052-04:00 jdbc[5]: null
 org.h2.message.DbException: The connection was not closed by the application and is garbage collected [90018-240]
 	at org.h2.message.DbException.get(DbException.java:223)
@@ -171,3 +172,5 @@ Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: The connection wa
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
 	... 53 more
+=======
+>>>>>>> b3f1c6e7125fac1b6d7b1cd4892413e571eb1491
