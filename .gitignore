@@ -1,0 +1,20 @@
+#Java class files
+*.class
+
+#Log files
+*.log
+
+#NetBeans files
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+
